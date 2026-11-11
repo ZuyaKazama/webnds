@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MabarDS</title>
+<meta name="description" content="MabarDS — emulator Nintendo DS untuk Android, cepat dan bisa multiplayer LAN maupun online.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: split hero with a CSS dual-screen handheld, then a single 1080px column of sections */
+:root{
+  --bg:#EDF0F4; --surface:#FFFFFF; --ink:#131C26; --muted:#56637A; --line:#D3DAE4;
+  --accent:#2F55E0; --accent-ink:#FFFFFF; --glow:#F2B33D;
+  --shell:#1B2533; --screen:#0E1620; --screen-ink:#CFE3FF;
+  --f-display:"Chakra Petch", "Segoe UI", system-ui, sans-serif;
+  --f-body:"IBM Plex Sans", system-ui, -apple-system, sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E141B; --surface:#161F2A; --ink:#E6ECF4; --muted:#93A1B6; --line:#263345;
+  --accent:#6E8DFF; --accent-ink:#0B1020; --glow:#F2B33D;
+  --shell:#243142; --screen:#070C12; --screen-ink:#CFE3FF; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#0E141B; --surface:#161F2A; --ink:#E6ECF4; --muted:#93A1B6; --line:#263345;
+  --accent:#6E8DFF; --accent-ink:#0B1020; --glow:#F2B33D;
+  --shell:#243142; --screen:#070C12; --screen-ink:#CFE3FF; color-scheme:dark }
+
+*{box-sizing:border-box}
+html{color-scheme:light}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 var(--f-body);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1080px;margin:0 auto}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;line-height:1.1;margin:0}
+.label{font:500 12px/1 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+
+/* nav */
+nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:20px}
+.brand{display:flex;align-items:center;gap:10px;font:700 20px var(--f-display);color:var(--ink);text-decoration:none}
+.mark{width:22px;height:28px;display:grid;grid-template-rows:1fr 1fr;gap:3px}
+.mark i{background:var(--accent);border-radius:2px}
+.mark i+i{background:var(--glow)}
+nav .links{display:flex;gap:20px;flex-wrap:wrap}
+nav .links a{color:var(--muted);text-decoration:none;font-size:15px}
+nav .links a:hover{color:var(--ink)}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center;padding-block:40px 72px}
+.hero > *{min-width:0}
+.hero h1{font-size:clamp(40px,6vw,68px);font-weight:700;letter-spacing:-.01em}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero p.lead{font-size:18px;color:var(--muted);max-width:52ch;margin:20px 0 28px}
+.cta{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 22px;border-radius:10px;font:600 16px var(--f-body);text-decoration:none;border:1px solid transparent;transition:transform .15s, background .15s}
+.btn.primary{background:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{transform:translateY(-1px)}
+.btn.ghost{border-color:var(--line);color:var(--ink);background:transparent}
+.btn.ghost:hover{background:var(--surface)}
+.btn small{font:400 12px var(--f-mono);opacity:.8}
+.meta{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:22px;font:13px var(--f-mono);color:var(--muted)}
+.meta b{color:var(--ink);font-weight:500}
+
+/* handheld */
+.device{justify-self:center;width:min(100%,330px);background:var(--shell);border-radius:22px;padding:18px 18px 22px;
+  box-shadow:0 30px 60px -30px rgba(10,20,40,.55);display:grid;gap:14px}
+.scr{background:var(--screen);border-radius:6px;aspect-ratio:4/3;color:var(--screen-ink);font:12px/1.4 var(--f-mono);padding:12px;position:relative;overflow:hidden}
+.scr.top{background:linear-gradient(180deg,#132238 0%,#0B131D 100%)}
+.hinge{height:10px;border-radius:5px;background:rgba(255,255,255,.08)}
+.hud{display:flex;justify-content:space-between}
+.fps{font:700 44px/1 var(--f-display);color:var(--glow);margin-top:18px}
+.fps span{font:500 12px var(--f-mono);color:var(--screen-ink);opacity:.7;margin-left:6px}
+.bars{position:absolute;left:12px;right:12px;bottom:12px;display:flex;align-items:flex-end;gap:3px;height:34px}
+.bars i{flex:1;background:rgba(110,141,255,.55);border-radius:1px;animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{50%{transform:scaleY(.6)}}
+.bars i{transform-origin:bottom}
+.mp{display:grid;gap:8px;height:100%;align-content:center}
+.mp .row{display:flex;justify-content:space-between;align-items:center;border:1px solid rgba(207,227,255,.18);border-radius:5px;padding:7px 9px}
+.mp .row.on{border-color:var(--glow);color:#fff}
+.dot{width:7px;height:7px;border-radius:50%;background:#4FD18B;display:inline-block;margin-right:6px}
+@media (prefers-reduced-motion:reduce){.bars i{animation:none}}
+
+/* sections */
+section{padding-block:56px;border-top:1px solid var(--line)}
+section h2{font-size:clamp(28px,4vw,38px);margin:10px 0 28px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px 32px}
+.feat h3{font-size:19px;margin-bottom:6px}
+.feat p{margin:0;color:var(--muted);font-size:15px}
+.feat .tag{font:500 12px var(--f-mono);color:var(--accent);margin-bottom:10px;display:block}
+
+.mp-split{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:24px}
+.panel h3{font-size:20px;margin-bottom:8px}
+.panel p{color:var(--muted);margin:0 0 14px;font-size:15px}
+.panel ol{margin:0;padding-left:20px;font-size:15px;display:grid;gap:6px}
+code{font:14px var(--f-mono);background:var(--bg);padding:1px 6px;border-radius:4px;border:1px solid var(--line)}
+
+.steps{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(4,1fr);gap:24px;counter-reset:s}
+.steps li{counter-increment:s}
+.steps li::before{content:counter(s);display:grid;place-items:center;width:34px;height:34px;border-radius:50%;
+  border:1.5px solid var(--accent);color:var(--accent);font:600 15px var(--f-display);margin-bottom:12px}
+.steps b{display:block;font-family:var(--f-display);font-size:17px;margin-bottom:4px}
+.steps span{color:var(--muted);font-size:15px}
+
+.spec{overflow-x:auto}
+.spec table{width:100%;border-collapse:collapse;font-size:15px;min-width:460px}
+.spec td{padding:12px 0;border-bottom:1px solid var(--line);vertical-align:top}
+.spec td:first-child{font:13px var(--f-mono);color:var(--muted);width:38%;padding-right:16px}
+
+details{border-bottom:1px solid var(--line);padding-block:16px}
+summary{cursor:pointer;font:600 17px var(--f-display);list-style:none;display:flex;justify-content:space-between;gap:16px}
+summary::after{content:"+";color:var(--accent);font-size:22px;line-height:1}
+details[open] summary::after{content:"–"}
+details p{color:var(--muted);margin:10px 0 0;max-width:68ch}
+
+.final{text-align:left;display:flex;flex-wrap:wrap;gap:24px;align-items:center;justify-content:space-between}
+.final h2{margin:0}
+footer{border-top:1px solid var(--line);padding-block:28px 40px;color:var(--muted);font-size:14px;display:flex;flex-wrap:wrap;gap:12px 28px;justify-content:space-between}
+footer p{margin:0;max-width:70ch}
+
+@media (max-width:860px){
+  .hero{grid-template-columns:1fr;gap:40px;padding-block:24px 56px}
+  .grid{grid-template-columns:1fr 1fr}
+  .steps{grid-template-columns:1fr 1fr}
+  .mp-split{grid-template-columns:1fr}
+}
+@media (max-width:560px){
+  .grid,.steps{grid-template-columns:1fr}
+  nav .links{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <nav>
+    <a class="brand" href="#top"><span class="mark" aria-hidden="true"><i></i><i></i></span>MabarDS</a>
+    <div class="links">
+      <a href="#fitur">Fitur</a>
+      <a href="#multiplayer">Multiplayer</a>
+      <a href="#pasang">Cara pasang</a>
+      <a href="#faq">FAQ</a>
+    </div>
+  </nav>
+
+  <header class="hero" id="top">
+    <div>
+      <span class="label">Emulator Nintendo DS · Android</span>
+      <h1 style="margin-top:14px">Main game DS di HP, <em>bareng teman</em>.</h1>
+      <p class="lead">MabarDS dibangun di atas core melonDS dengan tampilan baru yang ringan. Ringan di HP kentang, makin tajam di HP flagship, dan bisa multiplayer lewat hotspot, Wi-Fi yang sama, atau internet.</p>
+      <div class="cta">
+        <a class="btn primary" id="dl-main" href="https://github.com/USERNAME/MabarDS/releases/latest" target="_blank" rel="noopener">
+          Unduh APK <small>v0.1.1</small>
+        </a>
+        <a class="btn ghost" id="src-main" href="https://github.com/USERNAME/MabarDS" target="_blank" rel="noopener">Kode sumber</a>
+      </div>
+      <div class="meta">
+        <span><b>Android 8.0+</b></span>
+        <span>arm64-v8a</span>
+        <span>Gratis · GPL-3.0</span>
+      </div>
+    </div>
+
+    <div class="device" aria-label="Ilustrasi layar ganda MabarDS">
+      <div class="scr top">
+        <div class="hud"><span>LAYAR ATAS</span><span>256×192</span></div>
+        <div class="fps">60<span>fps</span></div>
+        <div style="opacity:.7;margin-top:4px">audio 25 ms · JIT aktif</div>
+        <div class="bars" aria-hidden="true">
+          <i style="height:60%"></i><i style="height:85%;animation-delay:.1s"></i><i style="height:45%;animation-delay:.2s"></i><i style="height:95%;animation-delay:.3s"></i><i style="height:70%;animation-delay:.4s"></i><i style="height:55%;animation-delay:.5s"></i><i style="height:88%;animation-delay:.6s"></i><i style="height:65%;animation-delay:.7s"></i><i style="height:78%;animation-delay:.8s"></i><i style="height:50%;animation-delay:.9s"></i>
+        </div>
+      </div>
+      <div class="hinge" aria-hidden="true"></div>
+      <div class="scr">
+        <div class="mp">
+          <div class="label" style="color:var(--screen-ink);opacity:.6">Multiplayer · LAN</div>
+          <div class="row on"><span><span class="dot"></span>Kamu (host)</span><span>192.168.43.1</span></div>
+          <div class="row"><span><span class="dot"></span>Pemain 2</span><span>terhubung</span></div>
+          <div class="row" style="opacity:.55"><span>Menunggu pemain…</span><span>UDP 7064</span></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section id="fitur">
+    <span class="label">Fitur</span>
+    <h2>Dibuat untuk cepat dan main bareng</h2>
+    <div class="grid">
+      <div class="feat"><span class="tag">performa</span><h3>JIT ARM64</h3><p>Recompiler melonDS untuk prosesor 64-bit, jadi game tetap jalan penuh kecepatan, bahkan di HP murah.</p></div>
+      <div class="feat"><span class="tag">audio</span><h3>Suara tanpa kresek</h3><p>Output AAudio latensi rendah. Kecepatan emulasi mengikuti jam audio, jadi suara tetap mulus.</p></div>
+      <div class="feat"><span class="tag">simpan</span><h3>5 slot savestate</h3><p>Simpan dan muat kapan saja, plus save game otomatis yang ditulis aman supaya tidak korup.</p></div>
+      <div class="feat"><span class="tag">kontrol</span><h3>Layar sentuh &amp; gamepad</h3><p>Tombol sentuh di layar, dukungan gamepad Bluetooth dan keyboard, serta pilihan tata letak layar.</p></div>
+      <div class="feat"><span class="tag">pustaka</span><h3>Daftar game rapi</h3><p>Pilih folder ROM sekali, game tampil lengkap dengan ikon banner aslinya.</p></div>
+      <div class="feat"><span class="tag">segera</span><h3>Resolusi tinggi</h3><p>Untuk HP yang lebih kuat: renderer OpenGL ES dengan tampilan 2× sampai 3× lebih tajam, sedang dalam pengembangan.</p></div>
+    </div>
+  </section>
+
+  <section id="multiplayer">
+    <span class="label">Multiplayer</span>
+    <h2>Dua cara main bareng</h2>
+    <div class="mp-split">
+      <div class="panel">
+        <h3>Offline: hotspot atau Wi-Fi sama</h3>
+        <p>Tanpa kuota internet. Cocok untuk main di satu ruangan.</p>
+        <ol>
+          <li>Satu HP nyalakan hotspot, yang lain sambungkan.</li>
+          <li>Buka game yang sama, pilih <b>Multiplayer → Host</b>.</li>
+          <li>Pemain lain pilih <b>Cari di LAN</b>, host muncul otomatis.</li>
+        </ol>
+      </div>
+      <div class="panel">
+        <h3>Online: lewat IP atau VPN</h3>
+        <p>Untuk teman yang jauh. Paling mudah pakai Tailscale atau ZeroTier.</p>
+        <ol>
+          <li>Pasang Tailscale/ZeroTier di kedua HP, masuk ke jaringan yang sama.</li>
+          <li>Host memilih <b>Host</b> dan membagikan alamat IP-nya.</li>
+          <li>Pemain lain pilih <b>Gabung lewat IP</b>. Kalau pakai port-forward, buka UDP <code>7064</code>.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section id="pasang">
+    <span class="label">Cara pasang</span>
+    <h2>Siap main dalam semenit</h2>
+    <ol class="steps">
+      <li><b>Unduh APK</b><span>Ambil file terbaru dari halaman rilis.</span></li>
+      <li><b>Izinkan instalasi</b><span>Saat diminta, izinkan "Instal aplikasi tidak dikenal" untuk browser atau file manager.</span></li>
+      <li><b>Pilih folder ROM</b><span>Buka MabarDS dan arahkan ke folder berisi file <code>.nds</code> milikmu.</span></li>
+      <li><b>Main</b><span>Ketuk game. Atur nama pemain dan bahasa di Pengaturan.</span></li>
+    </ol>
+  </section>
+
+  <section>
+    <span class="label">Spesifikasi</span>
+    <h2>Persyaratan</h2>
+    <div class="spec">
+      <table>
+        <tr><td>Versi terbaru</td><td>0.1.1</td></tr>
+        <tr><td>Android</td><td>8.0 (API 26) ke atas</td></tr>
+        <tr><td>Arsitektur CPU</td><td>arm64-v8a (64-bit). HP 32-bit belum didukung.</td></tr>
+        <tr><td>Perangkat</td><td>Semua HP Android 64-bit, dari entry-level sampai flagship</td></tr>
+        <tr><td>Port multiplayer</td><td>UDP 7063 (pencarian LAN), UDP 7064 (permainan)</td></tr>
+        <tr><td>Lisensi</td><td>GPL-3.0, berbasis melonDS</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section id="faq">
+    <span class="label">FAQ</span>
+    <h2>Pertanyaan umum</h2>
+    <details><summary>Apakah MabarDS menyediakan game?</summary><p>Tidak. MabarDS hanya emulator. Gunakan salinan dari kartrid game yang kamu miliki sendiri.</p></details>
+    <details><summary>Muncul "Aplikasi tidak terpasang" saat update.</summary><p>Biasanya karena APK lama dipasang dari sumber lain dengan tanda tangan berbeda. Hapus versi lama dulu (cadangkan folder save), lalu pasang ulang.</p></details>
+    <details><summary>Multiplayer tidak menemukan host.</summary><p>Pastikan kedua HP di jaringan yang sama dan memainkan game serta versi yang sama. Beberapa router memblokir pencarian LAN; kalau begitu, pakai Gabung lewat IP.</p></details>
+    <details><summary>Game terasa lambat.</summary><p>Pakai renderer software dengan resolusi 1× di Pengaturan. Mode ini paling ringan dan cocok untuk HP dengan spek rendah.</p></details>
+    <details><summary>Apakah aman di HP saya?</summary><p>MabarDS bersifat open source. Kamu bisa memeriksa kodenya atau membangun APK sendiri dari repositori.</p></details>
+  </section>
+
+  <section class="final">
+    <h2>Ajak temanmu main sekarang.</h2>
+    <a class="btn primary" id="dl-bottom" href="https://github.com/USERNAME/MabarDS/releases/latest" target="_blank" rel="noopener">Unduh APK <small>v0.1.1</small></a>
+  </section>
+
+  <footer>
+    <p>MabarDS adalah proyek independen dan tidak berafiliasi dengan Nintendo. Nintendo DS adalah merek dagang milik Nintendo. Core emulasi oleh tim melonDS (GPL-3.0).</p>
+    <span>© 2026 MabarDS</span>
+  </footer>
+</div>
+</body>
+</html>
