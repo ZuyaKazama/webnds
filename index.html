@@ -60,6 +60,8 @@ nav .links a:hover{color:var(--ink)}
 .btn.ghost{border-color:var(--line);color:var(--ink);background:transparent}
 .btn.ghost:hover{background:var(--surface)}
 .btn small{font:400 12px var(--f-mono);opacity:.8}
+.pick{margin:16px 0 0;font-size:14px;color:var(--muted);max-width:56ch}
+.pick b{color:var(--ink);font-weight:600}
 .meta{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:22px;font:13px var(--f-mono);color:var(--muted)}
 .meta b{color:var(--ink);font-weight:500}
 
@@ -151,14 +153,15 @@ footer p{margin:0;max-width:70ch}
       <h1 style="margin-top:14px">Main game DS di HP, <em>bareng teman</em>.</h1>
       <p class="lead">MabarDS dibangun di atas core melonDS dengan tampilan baru yang ringan. Ringan di HP kentang, makin tajam di HP flagship, dan bisa multiplayer lewat hotspot, Wi-Fi yang sama, atau internet.</p>
       <div class="cta">
-        <a class="btn primary" id="dl-main" href="https://github.com/ZuyaKazama/MabarDs/releases/latest/download/MabarDS.apk" target="_blank" rel="noopener">
-          Unduh APK <small>v0.1.7</small>
+        <a class="btn primary" id="dl-main" href="https://github.com/ZuyaKazama/MabarDs/releases/latest/download/MabarDS-arm64.apk" target="_blank" rel="noopener">
+          Unduh 64-bit <small>disarankan</small>
         </a>
-        <a class="btn ghost" id="src-main" href="https://github.com/ZuyaKazama/MabarDs" target="_blank" rel="noopener">Kode sumber</a>
+        <a class="btn ghost" id="dl-32" href="https://github.com/ZuyaKazama/MabarDs/releases/latest/download/MabarDS-armv7.apk" target="_blank" rel="noopener">Unduh 32-bit <small>HP lama</small></a>
       </div>
+      <p class="pick">Bingung pilih yang mana? Hampir semua HP keluaran 2017 ke atas pakai <b>64-bit</b>. Kalau muncul "Aplikasi tidak kompatibel", pakai versi <b>32-bit</b>. Versi terbaru <b>v0.1.15</b> · <a href="https://github.com/ZuyaKazama/MabarDs" target="_blank" rel="noopener">Kode sumber</a></p>
       <div class="meta">
         <span><b>Android 8.0+</b></span>
-        <span>arm64-v8a</span>
+        <span>64-bit &amp; 32-bit</span>
         <span>Gratis · GPL-3.0</span>
       </div>
     </div>
@@ -188,7 +191,7 @@ footer p{margin:0;max-width:70ch}
     <span class="label">Fitur</span>
     <h2>Dibuat untuk cepat dan main bareng</h2>
     <div class="grid">
-      <div class="feat"><span class="tag">performa</span><h3>JIT ARM64</h3><p>Recompiler melonDS untuk prosesor 64-bit, jadi game tetap jalan penuh kecepatan, bahkan di HP murah.</p></div>
+      <div class="feat"><span class="tag">performa</span><h3>JIT ARM64</h3><p>Recompiler melonDS di versi 64-bit, jadi game tetap jalan penuh kecepatan, bahkan di HP murah. Versi 32-bit tersedia untuk HP lama.</p></div>
       <div class="feat"><span class="tag">audio</span><h3>Suara tanpa kresek</h3><p>Output AAudio latensi rendah. Kecepatan emulasi mengikuti jam audio, jadi suara tetap mulus.</p></div>
       <div class="feat"><span class="tag">simpan</span><h3>5 slot savestate</h3><p>Simpan dan muat kapan saja, plus save game otomatis yang ditulis aman supaya tidak korup.</p></div>
       <div class="feat"><span class="tag">kontrol</span><h3>Layar sentuh &amp; gamepad</h3><p>Tombol sentuh di layar, dukungan gamepad Bluetooth dan keyboard, serta pilihan tata letak layar.</p></div>
@@ -238,10 +241,10 @@ footer p{margin:0;max-width:70ch}
     <h2>Persyaratan</h2>
     <div class="spec">
       <table>
-        <tr><td>Versi terbaru</td><td>0.1.7</td></tr>
+        <tr><td>Versi terbaru</td><td>0.1.15</td></tr>
         <tr><td>Android</td><td>8.0 (API 26) ke atas</td></tr>
-        <tr><td>Arsitektur CPU</td><td>arm64-v8a (64-bit). HP 32-bit belum didukung.</td></tr>
-        <tr><td>Perangkat</td><td>Semua HP Android 64-bit, dari entry-level sampai flagship</td></tr>
+        <tr><td>Arsitektur CPU</td><td>arm64-v8a (64-bit) dan armeabi-v7a (32-bit)</td></tr>
+        <tr><td>Perangkat</td><td>HP Android 64-bit maupun 32-bit, dari entry-level sampai flagship</td></tr>
         <tr><td>Port multiplayer</td><td>UDP 7063 (pencarian LAN), UDP 7064 (permainan)</td></tr>
         <tr><td>Lisensi</td><td>GPL-3.0, berbasis melonDS</td></tr>
       </table>
@@ -255,12 +258,13 @@ footer p{margin:0;max-width:70ch}
     <details><summary>Muncul "Aplikasi tidak terpasang" saat update.</summary><p>Biasanya karena APK lama dipasang dari sumber lain dengan tanda tangan berbeda. Hapus versi lama dulu (cadangkan folder save), lalu pasang ulang.</p></details>
     <details><summary>Multiplayer tidak menemukan host.</summary><p>Pastikan kedua HP di jaringan yang sama dan memainkan game serta versi yang sama. Beberapa router memblokir pencarian LAN; kalau begitu, pakai Gabung lewat IP.</p></details>
     <details><summary>Game terasa lambat.</summary><p>Pakai renderer software dengan resolusi 1× di Pengaturan. Mode ini paling ringan dan cocok untuk HP dengan spek rendah.</p></details>
+    <details><summary>Pilih versi 64-bit atau 32-bit?</summary><p>Coba 64-bit dulu, karena lebih cepat. Kalau saat dipasang muncul "Aplikasi tidak kompatibel" atau "Paket tidak valid", berarti HP-mu 32-bit, jadi pakai versi 32-bit. Untuk mengecek, aplikasi seperti CPU-Z menampilkan arsitektur prosesor di tab System. Di HP 32-bit, game berat bisa terasa lebih lambat.</p></details>
     <details><summary>Apakah aman di HP saya?</summary><p>MabarDS bersifat open source. Kamu bisa memeriksa kodenya atau membangun APK sendiri dari repositori.</p></details>
   </section>
 
   <section class="final">
     <h2>Ajak temanmu main sekarang.</h2>
-    <a class="btn primary" id="dl-bottom" href="https://github.com/ZuyaKazama/MabarDs/releases/latest" target="_blank" rel="noopener">Unduh APK <small>v0.1.7</small></a>
+    <div class="cta"><a class="btn primary" id="dl-bottom" href="https://github.com/ZuyaKazama/MabarDs/releases/latest/download/MabarDS-arm64.apk" target="_blank" rel="noopener">Unduh 64-bit</a><a class="btn ghost" id="dl-bottom-32" href="https://github.com/ZuyaKazama/MabarDs/releases/latest/download/MabarDS-armv7.apk" target="_blank" rel="noopener">Unduh 32-bit</a></div>
   </section>
 
   <footer>
