@@ -13,7 +13,7 @@
 :root{
   --bg:#EDF0F4; --surface:#FFFFFF; --ink:#131C26; --muted:#56637A; --line:#D3DAE4;
   --accent:#2F55E0; --accent-ink:#FFFFFF; --glow:#F2B33D;
-  --shell:#1B2533; --screen:#0E1620; --screen-ink:#CFE3FF;
+  --shell:#1B2533; --screen:#0E1620; --screen-ink:#CFE3FF; --discord:#5865F2;
   --f-display:"Chakra Petch", "Segoe UI", system-ui, sans-serif;
   --f-body:"IBM Plex Sans", system-ui, -apple-system, sans-serif;
   --f-mono:"IBM Plex Mono", ui-monospace, Menlo, monospace;
@@ -126,6 +126,11 @@ details p{color:var(--muted);margin:10px 0 0;max-width:68ch}
 .support h2{margin:10px 0 12px}
 .support p{margin:0;color:var(--muted);max-width:60ch}
 .btn.coffee{background:var(--glow);color:#1A1204}
+.btn.discord{background:var(--discord);color:#fff}
+.btn.discord:hover{transform:translateY(-1px)}
+.btn svg{width:22px;height:22px;flex:none;fill:currentColor}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.chips span{font:500 13px var(--f-mono);color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:6px 12px}
 .btn.coffee:hover{transform:translateY(-1px)}
 .final{text-align:left;display:flex;flex-wrap:wrap;gap:24px;align-items:center;justify-content:space-between}
 .final h2{margin:0}
@@ -154,6 +159,7 @@ footer p{margin:0;max-width:70ch}
       <a href="#multiplayer">Multiplayer</a>
       <a href="#pasang">Cara pasang</a>
       <a href="#faq">FAQ</a>
+      <a href="#komunitas">Discord</a>
     </div>
     <a class="coffee-nav" href="#dukung">☕ Traktir kopi</a>
   </nav>
@@ -174,6 +180,7 @@ footer p{margin:0;max-width:70ch}
         <span><b>Android 5.0+</b></span>
         <span>64-bit &amp; 32-bit</span>
         <span>Gratis · GPL-3.0</span>
+        <span><a href="https://discord.gg/nNFPHBfJW" target="_blank" rel="noopener">Gabung Discord</a></span>
       </div>
     </div>
 
@@ -253,7 +260,7 @@ footer p{margin:0;max-width:70ch}
     <div class="spec">
       <table>
         <tr><td>Versi terbaru</td><td>0.1.20</td></tr>
-        <tr><td>Android</td><td>5.0 (API 26) ke atas</td></tr>
+        <tr><td>Android</td><td>5.0 (API 21) ke atas</td></tr>
         <tr><td>Arsitektur CPU</td><td>arm64-v8a (64-bit) dan armeabi-v7a (32-bit)</td></tr>
         <tr><td>Perangkat</td><td>HP Android 64-bit maupun 32-bit, dari entry-level sampai flagship</td></tr>
         <tr><td>Port multiplayer</td><td>UDP 7063 (pencarian LAN), UDP 7064 (permainan)</td></tr>
@@ -270,7 +277,20 @@ footer p{margin:0;max-width:70ch}
     <details><summary>Multiplayer tidak menemukan host.</summary><p>Pastikan kedua HP di jaringan yang sama dan memainkan game serta versi yang sama. Beberapa router memblokir pencarian LAN; kalau begitu, pakai Gabung lewat IP.</p></details>
     <details><summary>Game terasa lambat.</summary><p>Pakai renderer software dengan resolusi 1× di Pengaturan. Mode ini paling ringan dan cocok untuk HP dengan spek rendah.</p></details>
     <details><summary>Pilih versi 64-bit atau 32-bit?</summary><p>Coba 64-bit dulu, karena lebih cepat. Kalau saat dipasang muncul "Aplikasi tidak kompatibel" atau "Paket tidak valid", berarti HP-mu 32-bit, jadi pakai versi 32-bit. Untuk mengecek, aplikasi seperti CPU-Z menampilkan arsitektur prosesor di tab System. Di HP 32-bit, game berat bisa terasa lebih lambat.</p></details>
+    <details><summary>Bug atau butuh bantuan, tanya di mana?</summary><p>Gabung server Discord MabarDS, lalu tulis di #lapor-bug atau #tanya-jawab. Sertakan tipe HP, versi MabarDS, dan nama game supaya masalahnya cepat ketemu. <a href="https://discord.gg/nNFPHBfJW" target="_blank" rel="noopener">Gabung Discord</a></p></details>
     <details><summary>Apakah aman di HP saya?</summary><p>MabarDS bersifat open source. Kamu bisa memeriksa kodenya atau membangun APK sendiri dari repositori.</p></details>
+  </section>
+
+  <section id="komunitas">
+    <div class="support">
+      <div class="support-txt">
+        <span class="label">Komunitas</span>
+        <h2>Cari teman mabar di Discord</h2>
+        <p>Ngobrol sama pengguna lain, cari lawan main, tanya cara pasang, dan laporkan bug langsung ke pengembang. Kamu juga bisa ikut menguji versi terbaru sebelum dirilis.</p>
+        <div class="chips"><span>#cari-teman-mabar</span><span>#tanya-jawab</span><span>#lapor-bug</span><span>#saran-fitur</span></div>
+      </div>
+      <a class="btn discord" id="discord-btn" href="https://discord.gg/nNFPHBfJW" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.3 4.4A19.8 19.8 0 0 0 15.4 3l-.2.5a18.4 18.4 0 0 0-6.4 0L8.6 3a19.7 19.7 0 0 0-4.9 1.4C.6 9 0 13.5.3 18a19.9 19.9 0 0 0 6 3l.8-1.3a13 13 0 0 1-2-1l.5-.4a14.2 14.2 0 0 0 12.2 0l.5.4c-.6.4-1.300.7-2 1l.8 1.300a19.9 19.9 0 0 0 6-3c.4-5.200-.7-9.700-3.800-13.600ZM8.500 15.300c-1.200 0-2.100-1.100-2.100-2.400s.9-2.400 2.100-2.400 2.100 1.100 2.100 2.400-.9 2.400-2.100 2.400Zm7 0c-1.200 0-2.100-1.100-2.100-2.400s.9-2.400 2.100-2.400 2.100 1.100 2.100 2.400-.9 2.400-2.100 2.400Z"/></svg>Gabung server Discord</a>
+    </div>
   </section>
 
   <section id="dukung">
@@ -291,7 +311,7 @@ footer p{margin:0;max-width:70ch}
 
   <footer>
     <p>MabarDS adalah proyek independen dan tidak berafiliasi dengan Nintendo. Nintendo DS adalah merek dagang milik Nintendo. Core emulasi oleh tim melonDS (GPL-3.0).</p>
-    <span><a href="https://sociabuzz.com/apaaja/tribe" target="_blank" rel="noopener">☕ Traktir kopi</a> · © 2026 MabarDS</span>
+    <span><a href="https://discord.gg/nNFPHBfJW" target="_blank" rel="noopener">Discord</a> · <a href="https://sociabuzz.com/apaaja/tribe" target="_blank" rel="noopener">☕ Traktir kopi</a> · © 2026 MabarDS</span>
   </footer>
 </div>
 </body>
